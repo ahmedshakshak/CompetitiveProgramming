@@ -40,7 +40,7 @@ void solve()
 
 }
 
-void floyed()
+void floyd()
 {
 	solve();
 
@@ -68,7 +68,7 @@ int main()
 
 //	freopen("output.txt", "w", stdout);
 
-	floyed();
+	floyd();
 
 	while(cin >> r1 >> c1 >> r2 >> c2)
 		cout << "To get from " << r1 << c1 << " to " << r2 << c2 << " takes " << a[r1 -'a'][c1 - '1'][r2 - 'a'][c2 - '1'] << " knight moves.\n";
