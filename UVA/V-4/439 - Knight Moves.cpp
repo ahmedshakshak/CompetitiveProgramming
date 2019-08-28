@@ -1,77 +1,60 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
 using namespace std;
-
+#define pi pair < int, int >
+#define pli pair < long long, int >
+#define pll pair < long long, long long >
 #define f first
 #define s second
-#define mp make_pair
-#define pi pair < int, int >
+#define MASK bitset < 20 >
 
-vector < string > v;
-
-const int MAX = 8;
-int dx[] = {2, 2, -2, -2, -1, -1, 1, 1};
-int dy[] = {1, -1, 1, -1, 2, -2, 2, -2};
-int a[MAX][MAX][MAX][MAX];
-char r1, c1, r2, c2;
+const int MAX = 9;
+int dx[] = {1, -1, 1, -1, 2, 2, -2, -2};
+int dy[] = {2, 2, -2, -2, 1, -1, 1, -1};
+int dist[MAX][MAX][MAX][MAX];
+char x1, y1, x2, y2; // be careful of declaring y1 with " <bits/stdc++.h> or <math.h> " --->> compilation error 
 
 bool vaild(int x, int y)
 {
-	if(x >= 8 || x < 0 || y >= 8 || y < 0)
-		return false;
-
-	return true;
+	return x >= 0 && y >= 0 && x < 8 && y < 8;
 }
 
-void solve()
+void floyed()
 {
-	for(int i = 0; i < MAX; i ++)
-		for(int j = 0; j < MAX; j ++)
-			for(int k = 0; k < MAX; k ++)
-				for(int l = 0; l < MAX; l ++)
-					if(i != k || j != l)
-						a[i][j][k][l] = 1e5;
+	for(int i = 0; i < 8; i ++)
+		for(int j = 0; j < 8; j ++)
+			for(int k = 0; k < 8; k ++)
+				for(int l = 0; l < 8; l ++)
+					dist[i][j][k][l] =  i == k && j == l ? 0 : 1e9;
 
-	for(int i = 0; i < MAX; i ++)
-		for(int j = 0; j < MAX; j ++)
-			for(int k = 0; k < MAX; k ++)
-				if(vaild(i + dx[k], j + dy[k]))
-					a[i][j][i + dx[k]][j + dy[k]] = 1;
+	for(int i = 0; i < 8; i ++)
+		for(int j = 0; j < 8; j ++)
+			for(int k = 0; k < 8; k ++)
+			{
+				int x = dx[k] + i, y = dy[k] + j;
 
-}
+				if(vaild(x, y))
+					dist[i][j][x][y] = 1;
+			}
 
-void floyd()
-{
-	solve();
-
-	for(int i = 0; i < MAX; i ++)
-		for(int j = 0; j < MAX; j ++)
-			for(int k = 0; k < MAX; k ++)
-				for(int l = 0; l < MAX; l ++)
-					for(int m = 0; m < MAX; m ++)
-						for(int o = 0; o < MAX; o ++)
-						{
-							if(k == m && l == o)
-								continue;
-
-							if(a[k][l][m][o] == 0)
-								a[k][l][m][o] = a[k][l][i][j] + a[i][j][m][o];
-							else
-								a[k][l][m][o] = min(a[k][l][m][o], a[k][l][i][j] + a[i][j][m][o]);
-						}
-
+	for(int i = 0; i < 8; i ++)
+		for(int j = 0; j < 8; j ++)
+			for(int k = 0; k < 8; k ++)
+				for(int l = 0; l < 8; l ++)
+					for(int m = 0; m < 8; m ++)
+						for(int n = 0; n < 8; n ++)
+							dist[k][l][m][n] = min(dist[k][l][m][n], dist[k][l][i][j] + dist[i][j][m][n]);
 }
 
 int main()
 {
 	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	floyed();
 
-//	freopen("output.txt", "w", stdout);
-
-	floyd();
-
-	while(cin >> r1 >> c1 >> r2 >> c2)
-		cout << "To get from " << r1 << c1 << " to " << r2 << c2 << " takes " << a[r1 -'a'][c1 - '1'][r2 - 'a'][c2 - '1'] << " knight moves.\n";
+	while(cin >> x1 >> y1 >> x2 >> y2)
+	{
+		x1 -= 'a', y1 -= '1', x2 -= 'a', y2 -= '1';
+		cout << "To get from " << char(x1 + 'a') << char(y1 + '1') << " to " << char(x2 + 'a') << char(y2 + '1') << " takes " << dist[x1][y1][x2][y2] << " knight moves.\n";
+	}
 
 	return 0;
 }
