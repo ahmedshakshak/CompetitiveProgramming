@@ -13,16 +13,16 @@ using ordered_set = tree < T, null_type, less_equal < T >, rb_tree_tag, tree_ord
 #define s second
 
 const int MAX = 100 + 1;
-int n, k,eleTime[MAX], x;
+int n, k,eleTime[7], x;
 string str;
-vector < int > eleNodes[MAX], nodesEle[MAX];
+vector < int > eleNodes[7], nodesEle[MAX];
 
 int dijkstra()
 {
-	int dist[MAX][MAX] = {}, ans = 1e9;
-	bool visited[MAX][MAX] = {};
+	int dist[7][MAX] = {}, ans = 1e9;
+	bool visited[7][MAX] = {};
 
-	for(int i = 1; i < MAX; i ++)
+	for(int i = 1; i <= 6; i ++)
 		for(int j = 1; j < MAX; j ++)
 			dist[i][j] = 1e9;
 
@@ -64,7 +64,6 @@ int dijkstra()
 
 	}
 
-
 	for(int i = 1; i <= n; i ++)
 		ans = min(ans, dist[i][k]);
 
@@ -79,12 +78,13 @@ int main()
 			cin >> eleTime[i];
 
 		for(int i = 0; i < MAX; i ++)
-			eleNodes[i].clear(), nodesEle[i].clear();
+			nodesEle[i].clear();
 
 		cin.ignore();
 
 		for(int i = 1; i <= n; i ++)
 		{
+			eleNodes[i].clear();
 			getline(cin, str);
 			stringstream ss(str);
 
