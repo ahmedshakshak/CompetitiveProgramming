@@ -8,7 +8,6 @@ int sliding_window(string &str)
 	while(l < str.size())
 	{
 		const auto ch = str[l++];
-
 		if(counter[ch] == 0)
 		{
 			c--;
@@ -27,7 +26,6 @@ int sliding_window(string &str)
 
 				const auto ch = str[r++];
 				counter[ch]--;
-
 				if(counter[ch] == 0)
 				{
 					c++;
